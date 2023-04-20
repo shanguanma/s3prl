@@ -26,9 +26,9 @@ def get_downstream_args():
 
     # distributed training
     parser.add_argument('--backend', default='nccl', help='The backend for distributed training')
-    parser.add_argument('--local_rank', type=int,
-                        help=f'The GPU id this process should use while distributed training. \
-                               None when not launched by torch.distributed.launch')
+    #parser.add_argument('--local_rank', type=int,
+    #                    help=f'The GPU id this process should use while distributed training. \
+    #                           None when not launched by torch.distributed.launch')
 
     # use a ckpt as the experiment initialization
     # if set, all the args and config below this line will be overwrited by the ckpt
@@ -121,11 +121,19 @@ def get_downstream_args():
             return Namespace(**out_dict)
 
         # overwrite args
+        """
         cannot_overwrite_args = [
             'mode', 'evaluate_split', 'override',
             'backend', 'local_rank', 'past_exp',
             'device'
         ]
+        """
+        cannot_overwrite_args = [
+            'mode', 'evaluate_split', 'override',
+            'backend', 'past_exp',
+            'device'
+        ]
+        
         args = update_args(args, ckpt['Args'], preserve_list=cannot_overwrite_args)
         os.makedirs(args.expdir, exist_ok=True)
         args.init_ckpt = ckpt_pth
@@ -156,9 +164,10 @@ def main():
     torch.multiprocessing.set_sharing_strategy('file_system')
     torchaudio.set_audio_backend('sox_io')
     hack_isinstance()
-
+    #print(f"local_rank: {local_rank}")    
     # get config and arguments
     args, config, backup_files = get_downstream_args()
+    args.local_rank = int(os.environ['LOCAL_RANK'])
     if args.cache_dir is not None:
         torch.hub.set_dir(args.cache_dir)
 
@@ -171,7 +180,8 @@ def main():
         ckpt = torch.load(args.init_ckpt, map_location='cpu')
 
         now_use_ddp = is_initialized()
-        original_use_ddp = ckpt['Args'].local_rank is not None
+        original_use_ddp =  ckpt['Args'].local_rank is not None
+        
         assert now_use_ddp == original_use_ddp, f'{now_use_ddp} != {original_use_ddp}'
 
         if now_use_ddp:
