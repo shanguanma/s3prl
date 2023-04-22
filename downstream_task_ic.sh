@@ -20,7 +20,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ];then
    pretrain_model=$exp_dir/checkpoint_289_400000.pt
    num_gpus=4
    downstream_task_config=s3prl/s3prl/downstream/fluent_commands/config.yaml
-   CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --use_env --nproc_per_node $num_gpus s3prl/s3prl/run_downstream.py\
+   CUDA_VISIBLE_DEVICES=4,5,6,7 python -m torch.distributed.launch --use_env --nproc_per_node $num_gpus s3prl/s3prl/run_downstream.py\
            -m train \
            -u hubert_local\
            -k $pretrain_model\
@@ -29,4 +29,20 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ];then
            -o config.runner.gradient_accumulate_steps=1\
            --auto_resume \
            --expdir $exp_dir
+fi
+if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ];then
+   echo "evalute test type"
+   exp_dir=exp/downstream_task/downstream_task_ic ## output 
+   #pretrain_model=$exp_dir/checkpoint_289_400000.pt
+   num_gpus=1
+   downstream_task_config=s3prl/s3prl/downstream/fluent_commands/config.yaml
+   CUDA_VISIBLE_DEVICES=4 \
+   python -m torch.distributed.launch \
+      --use_env \
+      --nproc_per_node $num_gpus \
+      s3prl/s3prl/run_downstream.py\
+       -m evaluate \
+       --config $downstream_task_config\
+       -e $exp_dir/dev-best.ckpt
+# test acc: 0.9607170820236206
 fi

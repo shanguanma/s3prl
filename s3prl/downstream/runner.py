@@ -110,9 +110,9 @@ class Runner():
         self._load_weight(model, name)
 
         if is_initialized() and trainable and any((p.requires_grad for p in model.parameters())):
-            local_rank=int(os.environ["LOCAL_RANK"])
-            #model = DDP(model, device_ids=[self.args.local_rank], find_unused_parameters=True)
-            model = DDP(model, device_ids=[local_rank], find_unused_parameters=True)
+            #local_rank=int(os.environ["LOCAL_RANK"])
+            model = DDP(model, device_ids=[self.args.local_rank], find_unused_parameters=True)
+            #model = DDP(model, device_ids=[local_rank], find_unused_parameters=True)
             for interface in interfaces or []:
                 setattr(model, interface, getattr(model.module, interface))
 
