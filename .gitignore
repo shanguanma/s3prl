@@ -156,7 +156,7 @@ spk2utt
 experiment
 *.tar.gz
 *.tsv
-*.txt
+#*.txt
 
 # doc
 docs/build
