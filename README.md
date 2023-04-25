@@ -86,6 +86,12 @@ Feel free to use or modify our toolkit in your research. Here is a [list of pape
 
 If you find this toolkit helpful to your research, please do consider citing [our papers](#citation), thanks!
 
+
+## how to using cumstom pretrain model to apply specify downstream task?
+Some complete recipes are disply at scripts/
+`downstream_task_ic.sh  for IC (intent classfication)`
+`downstream_task_st.sh  for ST (speech translation)`
+
 ## Installation
 
 1. **Python** >= 3.6
