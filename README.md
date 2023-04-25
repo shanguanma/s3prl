@@ -89,9 +89,10 @@ If you find this toolkit helpful to your research, please do consider citing [ou
 
 ## how to using cumstom pretrain model to apply specify downstream task?
 Some complete recipes are disply at scripts/
-`downstream_task_ic.sh  for IC (intent classfication)`
-`downstream_task_st.sh  for ST (speech translation)`
-
+```
+downstream_task_ic.sh  for IC (intent classfication)
+downstream_task_st.sh  for ST (speech translation)
+```
 ## Installation
 
 1. **Python** >= 3.6
