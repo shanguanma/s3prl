@@ -131,7 +131,7 @@ libri_*
 result
 result_*
 log
-log_*
+#log_* # effect upstream/log_stft
 Raw
 CMU_MOSI.zip
 libri_alignment.zip
