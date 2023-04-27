@@ -472,9 +472,9 @@ class Runner():
         records = defaultdict(list)
 
         # prepare back to training
-        if torch.cuda.is_available():
-            with torch.cuda.device(self.args.device):
-                torch.cuda.empty_cache()
+        #if torch.cuda.is_available():
+        #    with torch.cuda.device(self.args.device):
+        #        torch.cuda.empty_cache()
 
         for entry, training in zip(self.all_entries, trainings):
             if training:
