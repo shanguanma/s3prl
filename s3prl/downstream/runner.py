@@ -153,9 +153,9 @@ class Runner():
             model_config = self.args.upstream_model_config,
             refresh = upstream_refresh,
         ).to(self.args.device)
-
-        if is_initialized() and get_rank() == 0:
-            torch.distributed.barrier()
+        ## md note
+        #if is_initialized() and get_rank() == 0:
+        #    torch.distributed.barrier()
 
         return self._init_model(
             model = model,
@@ -296,7 +296,8 @@ class Runner():
 
                     if specaug:
                         features, _ = specaug(features)
-
+                    print(f"self.downstream.model device: {self.downstream.model.device}")
+                    #print(f"records is : {records}")
                     loss = self.downstream.model(
                         train_split,
                         features, *others,
@@ -363,6 +364,7 @@ class Runner():
 
                 if global_step % self.config['runner']['eval_step'] == 0:
                     for split in self.config['runner']['eval_dataloaders']:
+                        print(f"start evaluate: in train func")
                         save_names += self.evaluate(split, logger, global_step)
 
                 if global_step % self.config['runner']['save_step'] == 0:
@@ -472,13 +474,13 @@ class Runner():
         records = defaultdict(list)
 
         # prepare back to training
-        #if torch.cuda.is_available():
-        #    with torch.cuda.device(self.args.device):
-        #        torch.cuda.empty_cache()
+        if torch.cuda.is_available():
+            with torch.cuda.device(self.args.device):
+                torch.cuda.empty_cache()
 
         for entry, training in zip(self.all_entries, trainings):
             if training:
-                entry.model.train()
+                entry.model.train().to(self.args.device)
 
         if not_during_training:
             logger.close()

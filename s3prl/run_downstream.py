@@ -26,9 +26,9 @@ def get_downstream_args():
 
     # distributed training
     parser.add_argument('--backend', default='nccl', help='The backend for distributed training')
-    #parser.add_argument('--local_rank', type=int,
-    #                    help=f'The GPU id this process should use while distributed training. \
-    #                           None when not launched by torch.distributed.launch')
+    parser.add_argument('--local_rank', type=int,
+                        help=f'The GPU id this process should use while distributed training. \
+                               None when not launched by torch.distributed.launch')
 
     # use a ckpt as the experiment initialization
     # if set, all the args and config below this line will be overwrited by the ckpt
@@ -135,6 +135,7 @@ def get_downstream_args():
         ]
         
         args = update_args(args, ckpt['Args'], preserve_list=cannot_overwrite_args)
+        print(str(args))
         os.makedirs(args.expdir, exist_ok=True)
         args.init_ckpt = ckpt_pth
         config = ckpt['Config']
@@ -168,14 +169,22 @@ def main():
     # get config and arguments
     args, config, backup_files = get_downstream_args()
     args.local_rank = int(os.environ['LOCAL_RANK'])
+    #local_rank = int(os.environ['LOCAL_RANK'])
     if args.cache_dir is not None:
         torch.hub.set_dir(args.cache_dir)
 
     # When torch.distributed.launch is used
+
     if args.local_rank is not None:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(args.backend)
+    
+    """
+    if local_rank is not None:
+        torch.cuda.set_device(local_rank)
+        torch.distributed.init_process_group(args.backend)
 
+    """
     if args.mode == 'train' and args.past_exp:
         ckpt = torch.load(args.init_ckpt, map_location='cpu')
 
