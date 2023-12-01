@@ -16,7 +16,7 @@ runner:
 optimizer:
   name: TorchOptim
   torch_optim_name: Adam
-  lr: 1.0e-4
+  lr: 1.0e-3 # wavlm is 2.0e-1, 1.0e-4
 
 # # comment the whole scheduler config block to disable learning rate scheduling
 # scheduler:
@@ -28,7 +28,7 @@ downstream_expert:
     file_path: /workspace2/maduo/dataset/downstreams_tasks/Speaker_Identification/VoxCeleb1/
     meta_data: /workspace2/maduo/s3prl/s3prl/downstream/voxceleb1/veri_test_class.txt
     num_workers: 12
-    train_batch_size: 8
+    train_batch_size: 32 # wavlm is 512
     eval_batch_size: 1
     max_timestep: 128000
 

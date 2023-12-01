@@ -36,11 +36,11 @@ specaug:
 downstream_expert:
   corpus:                                 
     name: 'sbcsae'                   # Specify corpus
-    path: '/work/harry87122/dataset/SBCSAE/wav'
+    path: '/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/SBCSAE-preprocess/format/sbcsae/wav'
 
-    train: ['/work/harry87122/s3prl/s3prl/data/sbcsae/train.tsv']
-    dev: ['/work/harry87122/s3prl/s3prl/data/sbcsae/dev.tsv']
-    test: ['/work/harry87122/s3prl/s3prl/data/sbcsae/test.tsv']
+    train: ['/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/SBCSAE-preprocess/format/sbcsae/train.tsv']
+    dev: ['/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/SBCSAE-preprocess/format/sbcsae/dev.tsv']
+    test: ['/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/SBCSAE-preprocess/format/sbcsae/test.tsv']
 
     bucketing: True                       # Enable/Disable bucketing 
     batch_size: 16
@@ -48,7 +48,7 @@ downstream_expert:
   
   text:
     mode: 'character'                       # 'character'/'word'/'subword'
-    vocab_file: 'downstream/ctc/cv_vocab/en_char.txt'
+    vocab_file: 's3prl/s3prl/downstream/ctc/cv_vocab/en_char.txt'
   
   model:
     project_dim: 1024

@@ -13,7 +13,7 @@ runner:
 optimizer:
   name: TorchOptim
   torch_optim_name: Adam
-  lr: 1.0e-2
+  lr: 5.0e-4 
 
 # comment the whole scheduler config block
 # to disable learning rate scheduling
@@ -47,7 +47,7 @@ downstream_expert:
     test: ['test-clean']
 
     bucketing: True                       # Enable/Disable bucketing 
-    batch_size: 16
+    batch_size: 128
     num_workers: 24
   
   text:

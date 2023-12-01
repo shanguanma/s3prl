@@ -33,9 +33,12 @@ def main():
         file = str(file)
         file = join(args.root, file)
         wav, sample_rate = torchaudio.load(file)
-        wav = resample(
-            wav.squeeze(0).numpy(), sample_rate, 16000, res_type="kaiser_best"
-        )
+        #wav = resample(
+        #    wav.squeeze(0).numpy(), sample_rate, 16000, res_type="kaiser_best"
+        #)
+        #orig_sr: 'float', target_sr: 'float', res_type: 'str' = 'soxr_hq',
+        ## FIX TypeError: resample() takes 1 positional argument but 3 positional arguments (and 1 keyword-only argument) were given
+        wav = resample(wav.squeeze(0).numpy(),orig_sr=sample_rate,target_sr=16000,res_type="kaiser_best")  ## need to install  pip install samplerate ,  pip install resampy
         wav = torch.FloatTensor(wav).unsqueeze(0)
         new_file = file[:-3] + "wav"
         torchaudio.save(new_file, wav, 16000)

@@ -14,7 +14,7 @@ runner:
 optimizer:
   name: TorchOptim
   torch_optim_name: Adam
-  lr: 1.0e-4 
+  lr: 1.0e-5 
 
 # comment the whole scheduler config block
 # to disable learning rate scheduling
@@ -27,7 +27,7 @@ downstream_expert:
     speech_commands_root: /workspace2/maduo/dataset/downstreams_tasks/Keyword_Spotting/speech_commands_v0.01
     speech_commands_test_root: /workspace2/maduo/dataset/downstreams_tasks/Keyword_Spotting/speech_commands_test_set_v0.01
     num_workers: 8
-    batch_size: 32
+    batch_size: 512
 
   modelrc:
     projector_dim: 256

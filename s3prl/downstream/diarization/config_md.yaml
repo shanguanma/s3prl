@@ -13,7 +13,7 @@ runner:
 optimizer:
   name: TorchOptim
   torch_optim_name: Adam
-  lr: 1.0e-4
+  lr: 2.0e-3 
 
 downstream_expert:
   datarc:
@@ -26,7 +26,7 @@ downstream_expert:
 
   loaderrc:
     num_workers: 8
-    train_batchsize: 8
+    train_batchsize: 256
     eval_batchsize: 1
     train_dir: /workspace2/maduo/s3prl/s3prl/downstream/diarization/data/train
     dev_dir: /workspace2/maduo/s3prl/s3prl/downstream/diarization/data/dev

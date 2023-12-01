@@ -8,7 +8,7 @@ fi
 
 expdir=$1
 voxceleb1=$2
-
+num_gpus=1
 if [ ! -d "$expdir" ]; then
     echo "The expdir does not exist!"
     exit 1
@@ -32,7 +32,7 @@ do
     if [ ! -d "$log_dir" ] || [ "$(cat "$log_dir"/log.txt | grep "test-EER" | wc -l)" -lt 1 ] || [ ! -f $log_dir/test_predict.txt ]; then
         mkdir -p $log_dir
         override=args.expdir=${log_dir},,config.downstream_expert.datarc.file_path=${voxceleb1}
-        python3 run_downstream.py -m evaluate -e $ckpt_path -o $override > $log_dir/log.txt
+         CUDA_VISIBLE_DEVICES=4 torchrun  --master_port=25678  --nproc_per_node $num_gpus s3prl/s3prl/run_downstream.py -m evaluate -e $ckpt_path -o $override > $log_dir/log.txt
     fi
 done
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cv_root=/work/harry87122/dataset/cv-corpus-7.0-2021-07-21  # common voice 7.0 dataset location
-data_root=/work/harry87122/s3prl/s3prl/data/common_voice  # path to save data
+cv_root=/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21  # common voice 7.0 dataset location
+data_root=/workspace2/maduo/dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21/format/common_voice  # path to save data
 
 for lang in es zh-CN ar
 do

@@ -36,11 +36,11 @@ specaug:
 downstream_expert:
   corpus:                                 
     name: 'common_voice'                   # Specify corpus
-    path: '/work/harry87122/dataset/cv-corpus-7.0-2021-07-21/zh-CN/clips'
+    path: 'dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21/zh-CN/clips'
 
-    train: ['/work/harry87122/s3prl/s3prl/data/common_voice/zh-CN/train.tsv']
-    dev: ['/work/harry87122/s3prl/s3prl/data/common_voice/zh-CN/dev.tsv']
-    test: ['/work/harry87122/s3prl/s3prl/data/common_voice/zh-CN/test.tsv']
+    train: ['dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21/format/common_voice/zh-CN/train.tsv']
+    dev: ['dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21/format/common_voice/zh-CN/dev.tsv']
+    test: ['dataset/downstreams_tasks/Out-of-domain_Automatic_Speech_Recognition_Tasks/cv-corpus-7.0-2021-07-21/format/common_voice/zh-CN/test.tsv']
 
     bucketing: True                       # Enable/Disable bucketing 
     batch_size: 16
@@ -48,7 +48,7 @@ downstream_expert:
   
   text:
     mode: 'character'                       # 'character'/'word'/'subword'
-    vocab_file: 'downstream/ctc/cv_vocab/zh-CN_char.txt'
+    vocab_file: 's3prl/s3prl/downstream/ctc/cv_vocab/zh-CN_char.txt'
   
   model:
     project_dim: 1024
