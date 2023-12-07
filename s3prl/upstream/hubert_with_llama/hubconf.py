@@ -20,7 +20,7 @@ from s3prl.util.download import _urls_to_filepaths
 from .convert import load_and_convert_fairseq_ckpt
 from .expert import LegacyUpstreamExpert as _LegacyUpstreamExpert
 from .expert import UpstreamExpert as _UpstreamExpert
-
+from .expert import UpstreamExpertWithoutLlama
 logger = logging.getLogger(__name__)
 
 NEW_ENOUGH_SECS = 2.0
@@ -70,3 +70,5 @@ def llamahubert_local(*args, **kwargs):
     return llamahubert_custom(*args, **kwargs)
 
 
+def llamahubert_without_llama_local(*args,**kwargs):
+    return UpstreamExpertWithoutLlama(*args,**kwargs)

@@ -665,6 +665,56 @@ class LLaMAHubertModel(torch.nn.Module):
         feature = res["features"] if ret_conv else res["x"]
         return feature, res["padding_mask"]
 
+    def extract_features_remove_llama(
+        self,
+        source: torch.Tensor,
+        padding_mask: Optional[torch.Tensor] = None,
+        mask: bool = False,  ## it is setted by apply_mask config of hubert_asr.py, offical default is true.
+        ret_conv: bool = False,
+        output_layer: Optional[int] = None,
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        """output layer is 1-based"""
+        features = self.forward_features(source)
+        #if target_list is not None:
+        #    features, target_list = self.forward_targets(features, target_list)
+
+        features_pen = features.float().pow(2).mean()
+
+        features = features.transpose(1, 2)
+        features = self.layer_norm(features)
+        unmasked_features = features.clone()
+
+        if padding_mask is not None:
+            padding_mask = self.forward_padding_mask(features, padding_mask)
+
+        if self.post_extract_proj is not None:
+            features = self.post_extract_proj(features)
+
+        features = self.dropout_input(features)
+        unmasked_features = self.dropout_features(unmasked_features)
+
+        if mask:
+            x, mask_indices = self.apply_mask(features, padding_mask, target_list)
+        else:
+            x = features
+            mask_indices = None
+        # feature: (B, T, D), float
+        # target: (B, T), long
+        # x: (B, T, D), float
+        # padding_mask: (B, T), bool
+        # mask_indices: (B, T), bool
+        ## md note: _ means: (attn, layer_result), attn: attn representation of specify layer, layer_result: it is list, contains output of specify layer
+        ## if layer is not none: then x is output of specify layer.
+        x, _ = self.encoder(
+            x,
+            padding_mask=padding_mask,
+            layer=None if output_layer is None else output_layer - 1,
+        )
+
+        feature = features if ret_conv else x
+        return feature, padding_mask
+
+        
     def get_logits(self, net_output, is_masked=True):
         if is_masked:
             logits_list = net_output["logit_m_list"]
@@ -691,3 +741,12 @@ class LLaMAHubertModel(torch.nn.Module):
     def remove_pretraining_modules(self):
         self.target_glu = None
         self.final_proj = None
+
+    def remove_pretraining_modules_include_llama(self):
+        self.target_glu = None
+        self.final_proj = None
+        self.llama = None
+        self.llama_dim_mapper1 = None
+        self.llama_dim_mapper2 = None
+        self.llama_norm = None
+        self.label_embs_concat = None
