@@ -32,3 +32,4 @@ protobuf ~=3.19.0
 sed_eval
 more_itertools
 tensorboard
+omegaconf==2.0.6 # fixed ImportError: cannot import name 'get_ref_type' from 'omegaconf._utils' 
